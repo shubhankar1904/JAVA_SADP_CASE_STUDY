@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Portfolio Manager</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+
+<link rel="stylesheet" href="style1.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css" />
+
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+
+<script>
+	function onClickDelete() {
+		var selectedId = $('#orderTable input:checked').map(function() {
+			return this.value;
+		}).get().join(', ');
+
+		$.ajax({
+			type : "POST",
+			url : "/deleteOrders",
+			data : {
+				selection : selectedId
+			//notice that "myArray" matches the value for @RequestParam
+			//on the Java side
+			},
+			success : function(response) {
+				alert(response);
+				location.reload();
+			},
+			error : function(e) {
+				alert('Error: ' + e);
+			}
+		});
+	}
+
+	function onClickTrader() {
+		var selectedId = $('#orderTable input:checked').map(function() {
+			return this.value;
+		}).get().join(', ');
+
+		$.ajax({
+			type : "POST",
+			url : "/sendToTrader",
+			data : {
+				selection : selectedId
+			//notice that "myArray" matches the value for @RequestParam
+			//on the Java side
+			},
+			success : function(response) {
+				alert(response);
+				location.reload();
+			},
+			error : function(e) {
+				if (selectedId.length == 0) {
+					alert("Plese select atleast one order to send.")
+				} else {
+					alert('Error: ' + e);
+				}
+			}
+		});
+	}
+
+	$(function() {
+		$("#tagsName").autocomplete({
+			source : function(request, response) {
+				$.getJSON("/getMachedNames.web", {
+					term : request.term
+				}, response);
+			}
+		});
+	});
+
+	function onClicksubmit() {
+		$("#form1").submit(function(e) {
+			var postData = $(this).serializeArray();
+			var formURL = $(this).attr("action");
+			$.ajax({
+				url : formURL,
+				type : "POST",
+				data : postData,
+				success : function(data, textStatus, jqXHR) {
+					alert(data);
+					location.reload();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert("Something happened");
+				}
+			});
+			e.preventDefault(); //STOP default action
+			e.unbind(); //unbind. to stop multiple form submit.
+		});
+
+		$("#ajaxform").submit(); //Submit  the FORM
+	}
+
+	function editOrder(objButton) {
+
+		var value = objButton.value
+
+		var form = document.createElement("form");
+		var element1 = document.createElement("input");
+		form.method = "POST";
+		form.action = "\editOrder";
+
+		element1.value = value;
+		element1.type = "text";
+		element1.id = "orderId";
+		element1.name = "orderId";
+		form.appendChild(element1);
+		document.body.appendChild(form);
+
+		form.submit();
+	}
+
+	function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "\logout";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+</head>
+<body style="background-color: lightgrey;">
+
+
+
+	<ul class="nav nav-pills">
+		<li class="active" onClick="location.reload();"><a
+			data-toggle="pill" href="#home">Portfolio Manager</a></li>
+
+
+
+		<a onClick="logout()" style="float: right;"
+			class="btn btn-info btn-lg"> <span
+			class="glyphicon glyphicon-log-out">Logout</span>
+		</a>
+
+	</ul>
+
+	<div class="container">
+
+		<div class="tab-content">
+			<div class="tab-pane fade in active">
+				<h2>
+					Welcome <span th:text="${pm.fname}"> PM</span>
+				</h2>
+
+
+				<ul class="nav nav-pills">
+					<li class="active"><a data-toggle="pill" href="#home">View
+							Portfolio</a></li>
+					<li><a data-toggle="pill" href="#menu1">Order Book</a></li>
+					<li><a data-toggle="pill" href="#menu2">Create Order</a></li>
+
+
+				</ul>
+
+				<div class="tab-content">
+					<div id="home" class="tab-pane fade in active">
+						<h3>HOME</h3>
+
+
+						<h4>CURRENT HOLDINGS</h4>
+
+
+						<div class="well  well-lg" style="width: 75%">
+							<table class="table">
+
+
+
+
+								<tr>
+									<th>Symbol</th>
+									<!-- <th>Price</th> -->
+									<th>Volume</th>
+									<th>Date Time Stamp</th>
+									<th>Type</th>
+								</tr>
+								<tr th:each="holding : ${holdings}">
+									<td th:text="${holding.symbol}">symbol</td>
+									<!-- <td th:text="${holding.buyPrice}">buy price</td> -->
+									<td th:text="${holding.qty}">volume</td>
+									<td th:text="${holding.timeStamp}">current Price</td>
+									<td th:text="${holding.type}">type</td>
+									<!-- 	                <td> -->
+									<!-- 	                	<a class="btn btn-primary" th:href="${'/product/' + product.id}">View</a>  -->
+									<!-- 	                	<a class="btn btn-info" th:href="${'/product/edit/' + product.id}">Edit</a>  -->
+									<!-- 	                	<a class="btn btn-danger" th:href="${'/product/delete/' + product.id}">Delete</a> -->
+									<!--                 	</td> -->
+								</tr>
+							</table>
+						</div>
+					</div>
+					<div id="menu1" class="tab-pane fade" style="width: 100%;">
+						<h3>View Orders</h3>
+
+						<!--<div class="well bg  well-lg">-->
+						<table class="table" id="orderTable"
+							style="background-color: #f5f5f5;">
+							<tr>
+								<th>Order ID</th>
+								<th>Symbol</th>
+								<th>Quantity</th>
+								<th>Side</th>
+								<th>Type</th>
+								<th>Validity</th>
+								<!-- 								<th>Price</th> -->
+								<th>Stop Price</th>
+								<th>Limit Price</th>
+								<th>Trader name</th>
+								<th>DTS</th>
+								<th>Status</th>
+								<th>Send to trader</th>
+								<th>Delete Order</th>
+							</tr>
+							<tr th:each="order : ${orders}">
+								<td th:text="${order.orderId}">Id</td>
+								<td th:text="${order.symbol}">Symbol</td>
+								<td th:text="${order.qty}">quantity</td>
+								<td th:text="${order.orderSide}">side</td>
+								<td th:text="${order.orderType}">type</td>
+								<td th:text="${order.orderValidity}">validity</td>
+								<!-- 								<td th:text="${order.price}">price</td> -->
+								<td th:text="${order.sprice}">sprice</td>
+								<td th:text="${order.lprice}">lprice</td>
+								<td th:text="${order.tName}">trader name</td>
+								<td th:text="${order.timeStamp}">date</td>
+								<td th:text="${order.orderStatus}">Status</td>
+								<td><input type="checkbox" name="traderSelect"
+									id="traderSelect" th:value="${order.orderId}" /></td>
+								<td><input type="checkbox" name="deleteOrder"
+									id="deleteOrder" th:value="'del'+${order.orderId}" /></td>
+								<td><button type="button" class="btn btn-primary btn-md"
+										name="deleteOrder" id="editOrder" th:value="${order.orderId}"
+										onClick="editOrder(this)">Edit Order</button></td>
+
+							</tr>
+							<tr>
+								<td><button name="traderButton"
+										class="btn btn-primary btn-md" value="traderButton"
+										onClick="onClickTrader()">Send to trader</button></td>
+								<td><button name="traderButton"
+										class="btn btn-danger btn-md" value="traderButton"
+										onClick="onClickDelete()">Delete Orders</button></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<!-- 								<td></td> -->
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+
+
+							</tr>
+
+
+						</table>
+						<!--</div>-->
+					</div>
+
+
+
+
+					<div id="menu2" class="tab-pane fade">
+
+
+						<h3>Create Order</h3>
+
+
+						<form id="form1" name="form1" method="post" action="/createorder">
+							<div class="well well-lg" style="width: 50%">
+								<input id="tagsName" name="search" type="text"
+									class="search rounded" placeholder="Search..." />
+								<script>
+									
+								</script>
+
+
+
+								<div class="row">
+									<div class="col-sm-8">
+										OrderType : <select class="selectpicker" id="orderType"
+											name="orderType">
+											<option>LIMIT</option>
+											<option>MARKET</option>
+
+										</select>
+
+
+
+									</div>
+									<br /> <br />
+
+
+									<div class="col-sm-8">
+										Trader : <select class="selectpicker" id="traderName"
+											name="traderName">
+											<option th:each="tl : ${traders}" th:value="${tl}"
+												th:text="${tl}">trader</option>
+
+										</select>
+
+
+
+									</div>
+									<br /> <br />
+
+									<div class="col-sm-8">
+										Side : <select class="selectpicker" id="orderSide"
+											name="orderSide">
+											<option>BUY</option>
+											<option>SELL</option>
+
+										</select>
+									</div>
+									<br /> <br />
+
+
+									<div class="col-sm-8">
+										GTC/GTD : <select class="selectpicker" id="orderValidity"
+											name="orderValidity">
+											<option>GTC</option>
+											<option>GTD</option>
+
+										</select>
+
+
+									</div>
+
+
+
+								</div>
+								<br />
+
+								<div class="row">
+
+
+									Quantity <input type="number" id="qty" name="qty" placeholder="Quantity"
+										width="20px" align="middle" /> <br />
+									<!-- 										<input -->
+									<!-- 										type="text" id="price" name="price" placeholder="Price" -->
+									<!-- 										width="20px" align="middle"  /> <br /> -->
+									<br /> Stop Price <input type="text" id="sprice" name="sprice"
+										placeholder="Stop Price" width="20px" align="middle" /> <br />
+									<br /> Limit Price <input type="text" id="lprice" name="lprice"
+										placeholder="Limit Price" width="20px" align="middle" /> <br />
+									<br />
+
+
+
+								</div>
+								<button type="submit" class="btn btn-info" align="middle"
+									value="Transact" onClick="onClicksubmit()">Transact</button>
+
+
+							</div>
+
+						</form>
+
+
+
+
+					</div>
+
+
+
+
+					<img src="money_tree.png"
+						style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+				</div>
+			</div>
+			<div id="trader1" class="tab-pane fade">hello</div>
+		</div>
+	</div>
+
+</body>
+</html>

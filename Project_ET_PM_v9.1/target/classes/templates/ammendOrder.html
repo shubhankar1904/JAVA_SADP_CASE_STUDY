@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<title>Modify</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+
+<link rel="stylesheet" href="style1.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+</head>
+<body style="background-color: lightgrey;">
+
+
+	<h3>Modify Order</h3>
+	<div class="container">
+
+		<form id="form1" name="form1" method="post" action="/ammendorder">
+			<div class="well well-lg" style="width: 50%">
+				<input id="orderId" name="orderId" type="text" placeholder="orderId"
+					th:value="${orders.orderId}" readonly="readonly" /> <input
+					id="symbol" name="symbol" type="text" placeholder="symbol"
+					th:value="${orders.symbol}" readonly="readonly" />
+
+
+
+
+				<div class="row">
+					<div class="col-sm-8">
+						OrderType <select class="selectpicker" id="orderType"
+							name="orderType" disabled="true">
+							<option>LIMIT</option>
+							<option>MARKET</option>
+
+						</select>
+
+
+
+					</div>
+					<br /> <br />
+
+
+					<div class="col-sm-8">
+						Trader <select class="selectpicker" id="traderName"
+							name="traderName" disabled="true">
+							<option th:each="tl : ${traders}" th:value="${tl}"
+								th:text="${tl}">trader</option>
+
+						</select>
+
+
+
+					</div>
+					<br /> <br />
+
+					<div class="col-sm-8">
+						Side <select class="selectpicker" id="orderSide" name="orderSide"
+							disabled="true">
+							<option>BUY</option>
+							<option>SELL</option>
+
+						</select>
+					</div>
+					<br /> <br />
+
+
+					<div class="col-sm-8">
+						GTC/GTD <select class="selectpicker" id="orderValidity"
+							name="orderValidity" disabled="true">
+							<option>GTC</option>
+							<option>GTD</option>
+
+						</select>
+
+
+					</div>
+
+
+
+				</div>
+				<br />
+
+				<div class="row">
+
+					Quantity  <input type="number" id="qty" name="qty" placeholder="Quantity"
+						width="20px" align="middle" th:value="${orders.qty}"/> <br />
+				<!-- 	<br /> <input type="text" id="price" name="price"
+						placeholder="Price" width="20px" align="middle" disabled="true" th:value= "${orders.price} " /> -->
+			
+					<br /> Stop Price  <input type="text" id="sprice" name="sprice"
+						placeholder="Stop Price" width="20px" align="middle"
+						disabled="true" th:value= "${orders.sprice}"/> <br />
+					<br /> Limit Price  <input type="text" id="lprice" name="lprice"
+						placeholder="Limit Price" width="20px" align="middle"
+						disabled="true" th:value= "${orders.lprice}"/> <br />
+					<br />
+
+
+
+				</div>
+				<button type="submit" class="btn btn-info" align="middle"
+					value="Transact">Transact</button>
+
+
+
+
+			</div>
+
+		</form>
+	</div>
+		<script th:inline="javascript">
+	/*<![CDATA[*/
+	
+		  var order = [[${orders}]];
+    console.log(order);
+    var orderType=document.getElementById("orderType");
+    if(order.orderType=="MARKET"){
+    	orderType.selectedIndex=1;
+    }
+    else{
+    	orderType.selectedIndex=0;
+    }
+     var traderName=document.getElementById("traderName");
+     var i;
+    for(i=0; i<traderName.options.length; i++){
+	    if(order.tName==traderName.options[i].value){
+	    	traderName.selectedIndex=i;
+	    }
+    }
+  
+   var orderSide=document.getElementById("orderSide");
+    if(order.orderSide=="SELL"){
+    	orderType.selectedIndex=1;
+    }
+    else{
+    	orderType.selectedIndex=0;
+    }
+    
+    var orderValidity=document.getElementById("orderValidity");
+    if(order.orderValidity=="GTD"){
+    	orderValidity.selectedIndex=1;
+    }
+    else{
+    	orderValidity.selectedIndex=0;
+    }
+    /*]]>*/
+    
+	</script>
+</body>
+</html>

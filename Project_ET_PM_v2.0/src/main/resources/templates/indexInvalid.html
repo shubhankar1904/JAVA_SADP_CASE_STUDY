@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Broker Manager</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style1.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+</head>
+<body style="background-color: lightgrey;">
+
+
+	<div class="container" style="width: 95%">
+		<div class="col-sm-12"
+			style="margin-top: 1%; padding-bottom: 10px; width: 95%; padding-left: 0px;">
+			<div class="col-sm-12">
+				<p class="main">Welcome Broker</p>
+			</div>
+			<br/>
+
+		</div>
+		<br /> <br /> <br /> <br />
+
+
+		<div class="well well-lg" style="width: 95%">
+			<form action="/login" method="get">
+				<input type="number" placeholder="User Id" id="uId" maxlength="55"  size="55" name="uId" min="1" max="1000"/><br />
+				<br /> <input type="password" id="password" placeholder="Password"
+					name="password"  /><br /><br/>
+					<h5 style="color:RED;">Invalid Credentials. Try Again!</h5>
+				<br /> <input type="submit" value="Login" style="font-size: 18px;" /><br />
+			
+			</form>
+		</div>
+
+
+	</div>
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+	<!-- <a href="BrokerHomeFills">FILLS LINK</a> -->
+</body>
+</html>
+

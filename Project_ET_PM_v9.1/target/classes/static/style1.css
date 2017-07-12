@@ -1,0 +1,122 @@
+p.main {
+	font-size: 50px;
+	padding-top: 2%;
+}
+
+body {
+	/* margin: 0 auto;
+    padding: 2em 2em 4em;*/
+	/*max-width: 800px;*/
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	/*    height: 1024px;*/
+	line-height: 1.5em;
+	color: #545454;
+	background-color: #ffffff;
+	box-shadow: 0 0 2px rgba(0, 0, 0, 0.06);
+}
+
+/*..........Custom CSS.........*/
+form {
+	/*width:500px;*/
+	margin: 0 auto;
+}
+
+.logoutLblPos {
+	top: 50px;
+	position: fixed;
+	right: 10px;
+	top: 5px;
+	background-color: red;
+}
+
+.bg {
+	background-color: lightgrey !important;
+}
+
+ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
+	background-color: #333;
+}
+
+li {
+	float: left;
+}
+
+span li {
+	float: right;
+}
+
+li a {
+	display: inline-block;
+	color: white;
+	text-align: inherit;
+	padding: 14px 16px;
+	text-decoration: none;
+}
+
+li a:hover {
+	background-color: skyblue;
+}
+
+.search {
+	padding: 6px 15px 6px 30px;
+	width: 300px;
+	margin: 3px;
+	background: url('./images/search.png') no-repeat 8px 6px;
+}
+
+.rounded {
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+}
+
+input[type=text] {
+	color: #bcbcbc;
+}
+
+.light {
+	width: 95%;
+	height: 50px;
+}
+
+.light input[type=text] {
+	border: 1px solid #acb1b7;
+	background-color: #fcfcfc;
+}
+/*..........Custom CSS.........*/
+h1, h2, h3, h4, h5, h6 {
+	color: #222;
+	font-weight: 600;
+	line-height: 1.3em;
+}
+
+h2 {
+	margin-top: 1.3em;
+}
+
+a {
+	color: #0083e8;
+}
+
+b, strong {
+	font-weight: 600;
+}
+
+table {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+th, td {
+	text-align: left;
+	padding: 8px;
+}
+
+tr:nth-child(even) {
+	background-color: #f2f2f2
+}

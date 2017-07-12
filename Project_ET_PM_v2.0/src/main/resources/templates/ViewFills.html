@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Broker Manager</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style1.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+function setTwoNumberDecimal(event) {
+    this.value = parseFloat(this.value).toFixed(2);
+}
+</script>
+<script>
+
+function empty() {
+    var x;
+    x = document.getElementById("exec").value;
+    var y;
+    y = document.getElementById("block").value;
+    if (x == ""||y=="") {
+        alert("Enter a Valid Id ");
+        return false;
+    };
+}
+
+
+
+</script>
+<script>
+function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "/";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+
+<script>
+function disable(){
+	
+	 document.getElementById("stop").disabled =false;
+	 document.getElementById("start").disabled = true;
+	 window.alert("EXCHANGE HAS STARTED");
+	}
+
+
+
+</script>
+<script>
+function disableStop(){
+	
+	 document.getElementById("start").disabled = false;
+	 document.getElementById("stop").disabled = true;	
+	 window.alert("EXCHANGE HAS STOPPED");
+
+}
+
+
+
+</script>
+</head>
+<body style="background-color: lightgrey;">
+
+	<div class="container" style="width: 95%">
+		<header>
+			<div class="col-sm-12"
+				style="margin-top: 1%; padding-bottom: 10px; width: 95%; padding-left: 0px;">
+				<div class="col-sm-6">
+					<p class="main">Welcome Broker</p>
+				</div>
+				<br />
+				<div class="col-sm-6" style="text-align: right; padding-top: 5px;">
+				
+				</div>
+			</div>
+			<br />
+
+			<ul class="nav nav-pills" style="width: 95%">
+				<li><a href="BrokerHome1">Home</a></li>
+				<li><a href="ConfigureSecurities1">Configure Securities</a></li>
+				<li><a href="AddSecurities">Add Securities</a></li>
+				<li><a href="BrokerHomeFills">View Fills</a></li>
+				 <a onClick="logout()" style="float: right;" class="btn btn-info btn-lg"> <span
+			class="glyphicon glyphicon-log-out">Logout</span>
+		</a>
+			</ul>
+			<div class="well well-lg" style="width: 95%">
+				<input type="submit" id="start" onClick="disable()" value="Start Service" style="font-size: 18px;" />
+				<input type="submit" id="stop" onClick="disableStop()" value="Stop Service" style="font-size: 18px;" />
+			</div>
+		</header>
+
+		<!--View Fills start-->
+		<div id="menu2" class="tab-pane active">
+			<h3>View Fills</h3>
+			<div class="well well-lg" style="width: 95%">
+				<h4>Filter By:</h4>
+				<br />
+
+				<!-- start of second -->
+				<form action="Filters" method="post">
+					<div class="col-sm-2">
+					<label>Block Side</label>
+						<select name="side">
+							<option selected="true" value="">Select Side</option>
+							<option value="BUY">BUY</option>
+							<option value="SELL">SELL</option>
+
+						</select>
+					</div>
+					<div class="col-sm-2">
+<label>Security symbol</label>
+						<select name="symbol">
+							<option selected="true" value="">Select Symbol</option>
+
+
+							<option th:each="Fill : ${Sec}"><label
+									th:text="${Fill.secSymbol}"></label></option>
+							<option th:each="Fills1 : ${Fills}"><label
+									th:text="${Fills1.secSymbol}"></label></option>
+
+						</select>
+
+					</div>
+					<div class="col-sm-2">
+					<br/>
+						<input type="submit" value="Apply" style="font-size: 18px;" /> <br />
+						<br />
+					</div>
+				</form>
+				<!-- end of first form -->
+
+				<!-- start of second -->
+				<form action="FilterById" method="post">
+					<div class="col-sm-2">
+					<label>Execution ID</label>
+						<input name="executionID" id="exec" type="number" size="10"
+							 default="0" value="0" min="0" max="100000" class="exec"/>
+					</div>
+
+
+					<div class="col-sm-2">
+					<label>Block ID</label>
+					<br/>
+						<input name="blockID" id="block" type="number" size="5" 
+							default="0" value="0" min="0" max="100000" />
+					</div>
+					<div class="col-sm-2">
+<br/>
+						<input type="submit" value="Apply" onClick="return empty()" style="font-size: 18px;" />
+					</div>
+
+<br/>
+
+				</form>
+				<!-- end of second form -->
+				<br />
+				<form action="FilterReset" method="post">
+					<div class="col-sm-12">
+
+						<input type="submit" value="Reset" style="font-size: 18px;" />
+					</div>
+				</form>
+				<br /> <br /> <br />
+			</div>
+
+			<!--  END OF WELL-->
+			<div id="table-scroll" class="well well-lg" style="width: 95%">
+
+				<table>
+
+
+
+
+					<tr>
+						<th>Execution Id</th>
+						<th>Block Id</th>
+						<th>Execution Price</th>
+						<th>Executed Quantity</th>
+						<th>Open Quantity</th>
+						<th>Transaction Time</th>
+						<th>Side</th>
+						<th>Symbol</th>
+					</tr>
+					<div class="filters">
+					<tr th:each="Fill : ${Fill}">
+						<td th:text="${Fill.executionId}"><a
+							href="/Fill/${Fill.execution_id}">Id</a></td>
+						<td th:text="${Fill.block_id}">BlockId</td>
+						<td th:text="${Fill.executionPrice}"  onchange="setTwoNumberDecimal" step="0.25">Execution Price</td>
+						<td th:text="${Fill.executedQuantity}">Name</td>
+						<td th:text="${Fill.openQuantity}">price</td>
+						<td th:text="${Fill. timestamp}">Name</td>
+						<td th:text="${Fill.side}">Name</td>
+						<td th:text="${Fill.symbol}">Name</td>
+
+					</tr>
+					</div>
+					<div class="filters">
+					<tr th:each="Fills : ${Filters}">
+						<td th:text="${Fills.executionId}"><a
+							href="/Fills/${Fills.execution_id}">Id</a></td>
+						<td th:text="${Fills.block_id}">Fill Id</td>
+						<td th:text="${Fills.executionPrice}" onchange="setTwoNumberDecimal" step="0.25">descirptio</td>
+						<td th:text="${Fills.executedQuantity}">Name</td>
+						<td th:text="${Fills.openQuantity}">price</td>
+						<td th:text="${Fills. timestamp}">Name</td>
+						<td th:text="${Fills.side}">Name</td>
+						<td th:text="${Fills.symbol}">Name</td>
+					</tr>
+					</div>
+
+
+
+					<tr th:each="Fills : ${Filters1}">
+						<td th:text="${Fills.executionId}"><a
+							href="/Fills/${Fills.execution_id}">Id</a></td>
+						<td th:text="${Fills.block_id}">Fill Id</td>
+						<td th:text="${Fills.executionPrice}" onchange="setTwoNumberDecimal" step="0.25">descirptio</td>
+						<td th:text="${Fills.executedQuantity}">Name</td>
+						<td th:text="${Fills.openQuantity}">price</td>
+						<td th:text="${Fills.timestamp}">Name</td>
+						<td th:text="${Fills.side}">Name</td>
+						<td th:text="${Fills.symbol}">Name</td>
+
+
+					</tr>
+					<tr th:each="Fills : ${FillSReset}">
+						<td th:text="${Fills.executionId}"><a
+							href="/Fills/${Fills.execution_id}" >Id</a></td>
+						<td th:text="${Fills.block_id}">Fill Id</td>
+						<td th:text="${Fills.executionPrice}" onchange="setTwoNumberDecimal" step="0.25">descirptio</td>
+						<td th:text="${Fills.executedQuantity}">Name</td>
+						<td th:text="${Fills.openQuantity}">price</td>
+						<td th:text="${Fills. timestamp}">Name</td>
+						<td th:text="${Fills.side}">Name</td>
+						<td th:text="${Fills.symbol}">Name</td>
+
+
+					</tr>
+
+
+
+
+
+
+				</table>
+
+			</div>
+
+		</div>
+
+
+
+
+	</div>
+
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+</body>
+</html>

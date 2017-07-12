@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Broker Manager</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style1.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+	function onClicksubmit() {
+		$("#form1").submit(function(e) {
+			var postData = $(this).serializeArray();
+			var formURL = $(this).attr("action");
+			$.ajax({
+				url : formURL,
+				type : "POST",
+				data : postData,
+				success : function(data, textStatus, jqXHR) {
+					alert("Successfully sent to trader");
+					location.reload();
+				},
+				error : function(jqXHR, textStatus, errorThrown) {
+					alert("Something happened");
+				}
+			});
+			e.preventDefault(); //STOP default action
+			e.unbind(); //unbind. to stop multiple form submit.
+		});
+
+		$("#ajaxform").submit(); //Submit  the FORM
+	}
+</script>
+<script>
+function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "/";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+</head>
+<body style="background-color: lightgrey;">
+	<div class="container" style="width: 95%">
+		<header>
+			<div class="col-sm-12"
+				style="margin-top: 1%; padding-bottom: 10px; width: 95%; padding-left: 0px;">
+				<div class="col-sm-6">
+					<p class="main">Welcome Broker</p>
+				</div>
+				<br />
+				<div class="col-sm-6" style="text-align: right; padding-top: 5px;">
+					
+				</div>
+			</div>
+			<br />
+
+			<ul class="nav nav-pills" style="width: 95%">
+				<li><a href="BrokerHome1">Home</a></li>
+				<li><a href="ConfigureSecurities1">Configure Securities</a></li>
+				<li><a href="AddSecurities">Add Securities</a></li>
+				<li><a href="BrokerHomeFills">View Fills</a></li>
+				 <a onClick="logout()" style="float: right;" class="btn btn-info btn-lg"> <span
+			class="glyphicon glyphicon-log-out">Logout</span>
+		</a>
+			</ul>
+			<div class="well well-lg" style="width: 95%">
+				<input type="submit" value="Start Service" style="font-size: 18px;" />
+				<input type="submit" value="Stop Service" style="font-size: 18px;" />
+			</div>
+		</header>
+		<!-- Add Securities start-->
+		<div id="menu1" class="tab-pane active">
+
+			<h1>Enter Securities</h1>
+			<div class="well well-lg" style="width: 95%">
+
+				<table>
+					<tr>
+						<th>Security Symbol</th>
+						<th>Security Name</th>
+						<th>Last Trade price</th>
+						<th>Max Price spread percentage</th>
+						<th>Max number of executions per order</th>
+						<th>Max interval between executions in milliseconds</th>
+						<th>Probable percentage of fully executed orders</th>
+
+					</tr>
+
+					<form id="form1" name="form1" method="post" action="/AddSecurities">
+						<td><input id="1" name="1" type="text" size="5" /></td>
+						<td><input id="2" name="2" type="text" size="5" /></td>
+						<td><input id="3" name="3" type="text" size="5" /></td>
+						<td><input id="4" name="4" type="text" size="5" /></td>
+						<td><input id="5" name="5" type="text" size="5" /></td>
+						<td><input id="6" name="6" type="text" size="5" /></td>
+						<td><input id="7" name="7" type="text" size="5" /></td>
+						<td><input type="submit" onclick="onClicksubmit()"
+							value="Save" style="font-size: 18px;" /></td>
+					</form>
+				</table>
+			</div>
+		</div>
+	</div>
+	<!-- Add Securities end-->
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+</body>
+</html>

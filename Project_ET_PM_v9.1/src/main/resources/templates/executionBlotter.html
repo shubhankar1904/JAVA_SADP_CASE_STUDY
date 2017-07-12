@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Execution Blotter</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style2.css" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+	function blockb() {
+		location.href = "block_blotter";
+	}
+
+	function orderb() {
+		location.href = "order_blotter";
+	}
+
+	function executionb() {
+		location.href = "execution_blotter";
+	}
+	function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "\logout";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+
+<script>
+	$(document).ready(function() {
+
+		$('#t02 tr').click(function() {
+
+			var href = $(this).find("a").attr("href");
+			console.log("hello");
+			console.log(href);
+			if (href) {
+
+				var $row = $(this).closest("tr");
+				var $text = $row.find(".blockId1").text();
+				console.log($text);
+				window.location.href = '/MasterExecution?foo=' + $text;
+
+			}
+		});
+
+	});
+</script>
+</head>
+
+<body style="background-color: lightgrey;">
+	<ul class="nav nav-pills">
+		<li class="active" onClick="location.reload();"><a
+			data-toggle="pill" href="order_blotter">Execution Trader</a></li>
+
+
+
+		<a onClick="logout()" style="float: right;"
+			class="btn btn-info btn-lg"> <span
+			class="glyphicon glyphicon-log-out">Logout</span>
+		</a>
+
+	</ul>
+	<div class="container">
+		<h2>Welcome Shubhankar</h2>
+		<ul class="nav nav-pills" style="width: 75%">
+			<li><a data-toggle="pill" onClick="blockb()">BlOCK BLOTTER</a></li>
+			<li><a data-toggle="pill" onClick="orderb()">ORDER BLOTTER</a></li>
+			<li class="active"><a onClick="executionb()">EXECUTION
+					BLOTTER</a></li>
+		</ul>
+		<div class="tab-content">
+			<div id="execute" class="tab-pane fade in active">
+
+				<h2>List of Executed Blocks</h2>
+				<div class="well well-lg" style="width: 75%">
+
+					<table id="t02">
+						<!-- <table class="table table-hover"> -->
+
+						<thead>
+							<tr>
+								<th></th>
+								<th>Block ID</th>
+								<th>Symbol</th>
+								<th>Side</th>
+								<th>Block Order Type</th>
+								<th>Quantity</th>
+								<th>Limit Price</th>
+								<th>Stop Price</th>
+								<th>Status</th>
+							</tr>
+						</thead>
+
+						<tbody>
+							<tr th:each="Block : ${Block}">
+								<td><a href="#"></a></td>
+								<td class="blockId1" th:text="${Block.blockId}">Block Id</td>
+								<td th:text="${Block.symbol}">Symbol</td>
+								<td th:text="${Block.side}">Side</td>
+								<td th:text="${Block.blockOrderType}">Symbol</td>
+								<td th:text="${Block.totalQty}">Block Quantity</td>
+								<td th:text="${Block.limitPrice}">Limit price</td>
+								<td th:text="${Block.stopPrice}">Stop price</td>
+								<td th:text="${Block.status}">Status</td>
+							</tr>
+
+							<tr th:each="Block : ${Block1}">
+								<td><a href="#"></a></td>
+								<td class="blockId1" th:text="${Block.blockId}">Block Id</td>
+								<td th:text="${Block.symbol}">Symbol</td>
+								<td th:text="${Block.side}">Side</td>
+								<td th:text="${Block.blockOrderType}">Symbol</td>
+								<td th:text="${Block.totalQty}">Block Quantity</td>
+								<td th:text="${Block.limitPrice}">Limit price</td>
+								<td th:text="${Block.stopPrice}">Stop price</td>
+								<td th:text="${Block.status}">Status</td>
+							</tr>
+
+							<tr th:each="Block : ${Block2}">
+								<td><a href="#"></a></td>
+								<td class="blockId1" th:text="${Block.blockId}">Block Id</td>
+								<td th:text="${Block.symbol}">Symbol</td>
+								<td th:text="${Block.side}">Side</td>
+								<td th:text="${Block.blockOrderType}">Symbol</td>
+								<td th:text="${Block.totalQty}">Block Quantity</td>
+								<td th:text="${Block.limitPrice}">Limit price</td>
+								<td th:text="${Block.stopPrice}">Stop price</td>
+								<td th:text="${Block.status}">Status</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<h2>Orders</h2>
+				<div class="well well-lg" style="width: 75%">
+
+					<table id="t01">
+						<thead>
+							<tr>
+								<!-- <th>Block ID</th> -->
+								<th>Portfolio Manager</th>
+								<th>Order ID</th>
+								<th>Order Status</th>
+								<th>Symbol</th>
+								<th>Quantity</th>
+								<th>Quantity Executed</th>
+								<th>Order Type</th>
+								<!-- <th>Bid/Ask</th> -->
+								<th>Buy/Sell</th>
+								<th>GTC/GTD</th>
+							</tr>
+						</thead>
+						<tr th:each="Block_Orders : ${Block_Orders}">
+							<td th:text="${Block_Orders.pfId}">Portfolio Id</td>
+							<td th:text="${Block_Orders.orderId}">Order Id</td>
+							<td th:text="${Block_Orders.orderStatus}">Order Status</td>
+							<td th:text="${Block_Orders.symbol}">Symbol</td>
+							<td th:text="${Block_Orders.qty}">Quantity</td>
+							<td th:text="${Block_Orders.allocatedQty}">Quantity</td>
+							<td th:text="${Block_Orders.orderType}">Order Type</td>
+							<td th:text="${Block_Orders.orderSide}">Buy/Sell</td>
+							<td th:text="${Block_Orders.orderValidity}">GTC/GTD</td>
+
+
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+</body>
+</html>

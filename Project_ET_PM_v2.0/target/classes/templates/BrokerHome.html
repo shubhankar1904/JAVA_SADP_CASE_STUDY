@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Broker Manager</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style1.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script>
+	function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "/";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+<script>
+	var count = 1;
+	function setColorGreen(btn1, btn2, color) {
+		var property1 = document.getElementById(btn1);
+		var property2 = document.getElementById(btn2);
+		if (count == 0) {
+			property1.style.backgroundColor = ""
+			property2.style.backgroundColor = "red"
+			count = 1;
+		} else {
+			property1.style.backgroundColor = "#7FFF00"
+			property2.style.backgroundColor = "red"
+			count = 1;
+		}
+		/*  function setColorRed(btn1,btn2,color) {
+		     var property1 = document.getElementById(btn1);
+		     var property2 = document.getElementById(btn2);
+		     if (count == 1) {
+		         property1.style.backgroundColor = "#7FFF00"
+		         property2.style.backgroundColor = "" 
+		         count = 0;        
+		     }
+		     else {
+		         property1.style.backgroundColor = ""
+		        	property2.style.backgroundColor = "red"
+		         count = 1;
+		     } */
+
+		function setColorRed() {
+
+			var count2 = 1;
+			alert(count2);
+		}
+	}
+</script>
+<script>
+function disable(){
+	
+	 document.getElementById("stop").disabled =false;
+	 document.getElementById("start").disabled = true;
+	 window.alert("EXCHANGE HAS STARTED");
+
+}
+
+
+
+</script>
+<script>
+function disableStop(){
+	
+	 document.getElementById("start").disabled = false;
+	 document.getElementById("stop").disabled = true;
+	 window.alert("EXCHANGE HAS STOPPED");
+
+}
+
+
+
+</script>
+</head>
+<body style="background-color: lightgrey;">
+
+	<div class="container" style="width: 95%">
+		<header>
+			<div class="col-sm-12"
+				style="margin-top: 1%; padding-bottom: 10px; width: 95%; padding-left: 0px;">
+				<div class="col-sm-6">
+					<!-- <p class="main" th:text="${User.userName}"></p> -->
+
+				</div>
+				<br />
+				<div class="col-sm-6" style="text-align: right; padding-top: 5px;">
+
+				</div>
+			</div>
+			<br />
+
+			<ul class="nav nav-pills" style="width: 95%">
+				<li><a href="BrokerHome1">Home</a></li>
+				<li><a href="ConfigureSecurities1">Configure Securities</a></li>
+				<li><a href="AddSecurities">Add Securities</a></li>
+				<li><a href="BrokerHomeFills">View Fills</a></li>
+				<a onClick="logout()" style="float: right;"
+					class="btn btn-info btn-lg"> <span
+					class="glyphicon glyphicon-log-out">Logout</span>
+				</a>
+			</ul>
+
+			<!-- <div class="well well-lg" style="width:95%">
+			<form action="Start" method="post">
+					<div class="col-sm-2"> 		
+				<input type="submit" value="Start Service" id="button1" style="font-size: 18px;" />
+				</div>			
+			</form>
+			<form action="Stop" method="post">
+			<div class="col-sm-2">				
+			<input type="submit" value="Stop Service" id="button2"  style="font-size: 18px;" />
+			</div>			
+			</form>
+			</div> -->
+
+			<div class="well well-lg" style="width: 95%">
+				<input type="submit" id="start" onClick="disable()" value="Start Service" style="font-size: 18px;" />
+				<input type="submit" id="stop" onClick="disableStop()" value="Stop Service" style="font-size: 18px;" />
+			</div>
+
+		</header>
+
+
+
+		<div class="tab-content">
+			<div id="home" class="tab-pane fade in active">
+				<table>
+					<br />
+					<tr th:each="a: ${br}">
+						<td th:text="${a.brId}"></td>
+					</tr>
+				</table>
+				<!-- <p>
+					<strong>Welcome Broker</strong>
+					
+				</p>
+
+
+				<p>
+					<strong>Configure Securities</strong>
+				</p> -->
+
+
+				<div class="well well-lg" style="width: 95%">
+					<table>
+
+
+
+
+						<tr>
+							<th>Id</th>
+							<th>Security Symbol</th>
+							<th>Security Name</th>
+							<th>Last Trade price</th>
+							<th>Max Price spread percentage</th>
+							<th>Max number of executions per order</th>
+							<th>Max interval between executions in milliseconds</th>
+							<th>Probable percentage of fully executed orders</th>
+
+						</tr>
+						<tr th:each="Sec: ${Sec}">
+							<td th:text="${Sec.id}">Security Id</td>
+							<td th:text="${Sec.secName}">Security Name</td>
+							<td th:text="${Sec.secSymbol}">Last Trade price</td>
+							<td th:text="${Sec.lastPrice}">Max Price spread percentage</td>
+							<td th:text="${Sec.spread}">Max Price spread percentage</td>
+							<td th:text="${Sec.execNo}">Max number of executions per
+								order</td>
+							<td th:text="${Sec.interval}">Max interval between
+								executions in milliseconds</td>
+							<td th:text="${Sec.prob}">Probable percentage of fully
+								executed orders</td>
+
+
+
+
+
+						</tr>
+
+
+
+					</table>
+				</div>
+
+			</div>
+
+
+		</div>
+	</div>
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+</body>
+</html>

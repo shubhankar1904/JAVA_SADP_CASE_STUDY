@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="layout"> -->
+
+
+<head>
+<title>Block Blotter</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style2.css" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+	function blockb() {
+		location.href = "block_blotter";
+	}
+
+	function executionb() {
+		location.href = "execution_blotter";
+	}
+	function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "\logout";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+
+<script>
+	    $(document).ready(function() {
+
+		$(".blockId").click(function() {
+			var href = $(this).find("a").attr("href");
+			console.log(href);
+			if (href) {
+
+				var $row = $(this).closest("td");
+				var $text = $row.find(".clickableDiv").text();
+				console.log($text);
+				window.location.href = '/Master?foo=' + $text;
+
+			}
+		});
+	});
+</script>
+</head>
+
+<body style="background-color: lightgrey;">
+
+	<ul class="nav nav-pills">
+		<li class="active" onClick="location.reload();"><a
+			data-toggle="pill" href="order_blotter">Execution Trader</a></li>
+
+
+
+		<a onClick="logout()" style="float: right;"
+			class="btn btn-info btn-lg"> <span
+			class="glyphicon glyphicon-log-out">Logout</span>
+		</a>
+
+	</ul>
+	<div class="container">
+
+		<h2>Welcome Shubhankar</h2>
+
+		<ul class="nav nav-pills" style="width: 75%">
+			<li class="active"><a data-toggle="pill" onClick="blockb()">BlOCK
+					BLOTTER</a></li>
+			<li><a href="order_blotter">ORDER BLOTTER</a></li>
+			<li><a data-toggle="pill" onClick="executionb()">EXECUTION
+					BLOTTER</a></li>
+		</ul>
+
+		<div class="tab-content">
+
+			<!--  This section has tab for Block Blotter  -->
+
+			<div id="block" class="tab-pane fade in active">
+				<h2>List of Blocks</h2>
+				<div class="well well-lg" style="width: 75%">
+
+					<div>
+						<form action="/SendForExecution" id="TraderForm" method="get"
+							onSubmit="return myFunction1()">
+							<table class="table table-hover" id="example">
+								<tr>
+									<th>Block ID</th>
+									<th>Symbol</th>
+									<th>Side</th>
+									<th>Block Order Type</th>
+									<th>Quantity</th>
+									<th>Limit Price</th>
+									<th>Stop Price</th>
+									<th>Status</th>
+									<!-- <th></th>  -->
+									<th>Actions</th>
+								</tr>
+								<tr th:each="Block : ${Block}">
+
+									<td class="blockId"><a class="clickableDiv" href="#"
+										th:text="${Block.blockId}"></a></td>
+
+									<td th:text="${Block.symbol}">Symbol</td>
+									<td th:text="${Block.side}">Symbol</td>
+									<td th:text="${Block.blockOrderType}">Symbol</td>
+									<td th:text="${Block.totalQty}">OrderType</td>
+									<td th:text="${Block.limitPrice}">Limit price</td>
+									<td th:text="${Block.stopPrice}">Stop price</td>
+									<td th:text="${Block.status}">Status</td>
+
+									<!-- <td>
+										<div class="btn-group">
+											<a href="EditBlock.html"><button type="button"
+													class="btn btn-primary">Modify</button></a>
+										</div>
+									</td>  -->
+									<td><input type="checkbox" th:value="${Block.blockId}"
+										name="BlockList" /></td>
+
+								</tr>
+							</table>
+
+							<button type="submit" class="btn btn-primary">Send Block
+								to Exchange</button>
+						</form>
+					</div>
+				</div>
+			</div>
+
+
+			<h2>Orders</h2>
+			<div class="well well-lg" style="width: 75%">
+
+				<table id="t01">
+					<tr>
+						<th>Portfolio Id</th>
+						<th>Order ID</th>
+						<th>Order Status</th>
+						<th>Symbol</th>
+						<th>Quantity</th>
+						<th>Order Type</th>
+						<th>Buy/Sell</th>
+						<th>GTC/GTD</th>
+					</tr>
+
+					<tr th:each="Block_Orders : ${Block_Orders}">
+						<td th:text="${Block_Orders.pfId}">Portfolio Id</td>
+						<td th:text="${Block_Orders.orderId}">Order Id</td>
+						<td th:text="${Block_Orders.orderStatus}">Order Status</td>
+						<td th:text="${Block_Orders.symbol}">Symbol</td>
+						<td th:text="${Block_Orders.qty}">Quantity</td>
+						<td th:text="${Block_Orders.orderType}">Order Type</td>
+						<td th:text="${Block_Orders.orderSide}">Buy/Sell</td>
+						<td th:text="${Block_Orders.orderValidity}">GTC/GTD</td>
+
+
+					</tr>
+				</table>
+
+			</div>
+		</div>
+	</div>
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+	<script>
+		function myFunction1() {
+			var myform2 = document.getElementById("TraderForm");
+			var i = 0;
+			var count = 0;
+			//<![CDATA[   
+
+			for (i = 0; i < myform2.length; i++) {
+				if (myform2[i].checked) {
+
+					count++;
+				}
+
+			}
+			//]]>
+
+			/*console.log(count);  */
+
+			if (count == 0) {
+				alert("SELECT atleast one block !!");
+				return false;
+			} else
+				return true;
+
+		}
+	</script>
+</body>
+</html>

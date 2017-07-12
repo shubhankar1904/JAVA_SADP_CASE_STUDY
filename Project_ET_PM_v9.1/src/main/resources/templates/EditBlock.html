@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<title>Trader</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="style1.css" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<body style="background-color: lightgrey;">
+
+	<div class="container">
+
+		<h2>Welcome Trader</h2>
+
+		<ul class="nav nav-pills" style="width: 80%">
+			<li><a href="Trader.html">BlOCK BLOTTER</a></li>
+			<li><a href="Trader.html">ORDER BLOTTER</a></li>
+			<li><a href="Trader.html">EXECUTION BLOTTER</a></li>
+			<li class="active"><a data-toggle="pill" href="#modify">MODIFY</a></li>
+		</ul>
+
+		<div class="tab-content">
+
+			<div id="modify" class="tab-pane fade in active">
+				<h3>Block Details</h3>
+
+				<div class="well well-lg" style="width: 80%">
+					<table id="t01">
+						<tr>
+							<th>Block ID</th>
+							<th>Block Price</th>
+							<th>Status</th>
+							<th>Quantity</th>
+							<th>Side</th>
+							<th>Symbol</th>
+
+						</tr>
+
+						<tr>
+							<td>B012</td>
+							<td>1000</td>
+							<td>New</td>
+							<td>105</td>
+							<td>Buy</td>
+							<td>Apple</td>
+						</tr>
+					</table>
+					<br>
+				</div>
+
+				<h3>Corresponding Orders</h3>
+				<div class="well well-lg" style="width: 80%">
+
+					<table id="t01">
+						<tr>
+							<th>Sr. No.</th>
+							<th>Portfolio Manager</th>
+							<th>Order Id</th>
+							<th>Symbol</th>
+							<th>Quantity</th>
+							<th>Order Type</th>
+							<th>Bid/Ask</th>
+							<th>Buy/Sell</th>
+							<th>GTC/GTD</th>
+							<th></th>
+						</tr>
+
+						<tr>
+							<td>01</td>
+							<td>Charlie</td>
+							<td>08789</td>
+							<td>Google</td>
+							<td>100</td>
+							<td>Market Order</td>
+							<td>1007.21</td>
+							<td>Buy</td>
+							<td>GTC</td>
+							<td>
+								<div class="btn-group">
+									<a href="EditBlock.html"><button type="button"
+											class="btn btn-primary">Modify</button></a> <a
+										href="EditBlock.html"><button type="button"
+											class="btn btn-primary">Delete</button></a>
+								</div>
+							</td>
+						</tr>
+
+						<tr>
+							<td>02</td>
+							<td>Rose</td>
+							<td>08756</td>
+							<td>Apple</td>
+							<td>1000</td>
+							<td>Limit Order</td>
+							<td>1033.21</td>
+							<td>Sell</td>
+							<td>GTD</td>
+							<td>
+								<div class="btn-group">
+									<a href="EditBlock.html"><button type="button"
+											class="btn btn-primary">Modify</button></a> <a
+										href="EditBlock.html"><button type="button"
+											class="btn btn-primary">Delete</button></a>
+								</div>
+							</td>
+						</tr>
+
+					</table>
+
+					<br> <a href="EditBlock.html"><button type="button"
+							class="btn btn-primary" style="float: right;">Save
+							Changes</button></a> <br> <br>
+				</div>
+			</div>
+
+
+
+		</div>
+
+
+		<img src="money_tree.png"
+			style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+
+	</div>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Order Blotter</title>
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />
+<link rel="stylesheet" href="style2.css" />
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script>
+	function blockb() {
+		location.href = "block_blotter";
+	}
+
+	function executionb() {
+		location.href = "execution_blotter";
+	}
+	function logout() {
+
+		var form = document.createElement("form");
+		form.method = "POST";
+		form.action = "\logout";
+		document.body.appendChild(form);
+		form.submit();
+	}
+</script>
+</head>
+
+<body style="background-color: lightgrey;">
+	<ul class="nav nav-pills">
+		<li class="active" onClick="location.reload();"><a
+			data-toggle="pill" href="order_blotter">Execution Trader</a></li>
+
+
+
+		<a onClick="logout()" style="float: right;"
+			class="btn btn-info btn-lg"> <span
+			class="glyphicon glyphicon-log-out">Logout</span>
+		</a>
+
+	</ul>
+	<div class="container">
+		<h2>Welcome Shubhankar</h2>
+		<ul class="nav nav-pills" style="width: 75%">
+			<li><a data-toggle="pill" onClick="blockb()">BlOCK BLOTTER</a></li>
+			<li class="active"><a href="order_blotter">ORDER BLOTTER</a></li>
+			<li><a data-toggle="pill" onClick="executionb()">EXECUTION
+					BLOTTER</a></li>
+		</ul>
+		<div class="tab-content">
+
+			<div id="order" class="tab-pane fade in active">
+				<h2>Open Orders</h2>
+				<div class="well well-lg" style="width: 75%">
+
+
+					<form action="getFilter" method="get">
+						<div class="form-group">
+							<label for="sel1">Side</label> <select class="form-control"
+								id="sel1" name="sel1">
+								<option selected="selected">Select Side</option>
+								<option>BUY</option>
+								<option>SELL</option>
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="sel2">Type</label> <select class="form-control"
+								id="sel2" name="sel2">
+								<option selected="selected">Select Order Type</option>
+								<option>MARKET</option>
+								<option>LIMIT</option>
+
+							</select>
+						</div>
+
+						<div class="form-group">
+							<label for="sel3">Symbol</label> <select class="form-control"
+								id="sel3" name="sel3">
+								<option selected="selected">Select Symbol</option>
+								<option th:each="symbolOrder : ${symbolUpdated}"><label
+										th:text="${symbolOrder.symbol}"></label></option>
+								<!-- 	<option th:each="OrdersFiltered : ${Filters}"><label th:text="${OrdersFiltered.symbol}"></label></option> -->
+							</select>
+						</div>
+
+
+
+						<a href="getFilter"><button type="Submit"
+								style="margin-left: 50px" class="btn btn-primary">Search
+								</button></a>
+
+					</form>
+					<br />
+					<form action="resetOrder" method="get">
+						<a href="resetOrder"><button type="Submit"
+								style="margin-left: 50px" class="btn btn-primary">Reset</button></a>
+					</form>
+					<br> </br>
+
+					<div>
+						<form action="/blockBlotter" method="get" id="myForm"
+							onsubmit="return myFunction()">
+
+							<table class="table table-hover">
+
+								<tr>
+									<th>Order Id</th>
+									<th>Symbol</th>
+									<th>Limit Price</th>
+									<th>Stop Price</th>
+									<th>Status</th>
+									<th>OrderType</th>
+									<th>Side</th>
+									<th>Actions</th>
+								</tr>
+							</table>
+
+							<div id="table-scroll">
+								<table class="table table-hover">
+									<tr th:each="Orders : ${Orders}">
+										<td th:text="${Orders.orderId}">Order Id</td>
+										<td name="symbol" th:text="${Orders.symbol}">Symbol</td>
+										<td th:text="${Orders.lprice}">Limit price</td>
+										<td th:text="${Orders.sprice}">Stop price</td>
+										<td th:text="${Orders.orderStatus}">Status</td>
+										<td name="type" th:text="${Orders.orderType}">OrderType</td>
+										<td name="side" th:text="${Orders.orderSide}">Side</td>
+										<td><input type="checkbox" th:value="${Orders.orderId}"
+											name="openOrderList" /></td>
+
+									</tr>
+									<tr th:each="OrdersFiltered : ${Filters}">
+										<td th:text="${OrdersFiltered.orderId}">Order Id</td>
+										<td name="symbol" th:text="${OrdersFiltered.symbol}">Symbol</td>
+										<td th:text="${OrdersFiltered.lprice}">Limit price</td>
+										<td th:text="${OrdersFiltered.sprice}">Stop price</td>
+										<td th:text="${OrdersFiltered.orderStatus}">Status</td>
+										<td name="type" th:text="${OrdersFiltered.orderType}">OrderType</td>
+										<td name="side" th:text="${OrdersFiltered.orderSide}">Side</td>
+										<td><input type="checkbox"
+											th:value="${OrdersFiltered.orderId}" name="openOrderList" /></td>
+
+									</tr>
+
+								</table>
+							</div>
+							<button type="submit" style="margin-left: 50%"
+								class="btn btn-primary">Create Block</button>
+						</form>
+					</div>
+
+
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<img src="money_tree.png"
+		style="position: absolute; bottom: 0%; right: 0%; z-index: -3" />
+
+	<script type="text/javascript">
+		function myFunction() {
+			var myform = document.getElementById("myForm");
+			var i = 0;
+			var symbol = [];
+			var type = [];
+			var side = [];
+			var count = 0;
+			//<![CDATA[   
+
+			for (i = 0; i < myform.length; i++) {
+				if (myform[i].checked) {
+
+					symbol[count] = document.getElementsByName("symbol")[i].innerHTML;
+					type[count] = document.getElementsByName("type")[i].innerHTML;
+					side[count] = document.getElementsByName("side")[i].innerHTML;
+					console.log(symbol[count]);
+					count++;
+				}
+
+			}
+			//]]>
+
+			if (count == 0) {
+				alert("SELECT atleast one order !!");
+				return false;
+			} else {
+				var tellSymbol = symbol.allValuesSame();
+				console.log(tellSymbol);
+				var tellType = type.allValuesSame();
+				var tellSide = side.allValuesSame();
+				if (tellSymbol == true) {
+					if (tellType == true) {
+						if (tellSide == true) {
+							alert(" successful creation with " + count
+									+ " orders");
+							document.forms[2].submit();
+						} else {
+							alert("select orders of same side");
+							return false;
+						}
+
+					} else {
+						alert("select orders of same type");
+						return false;
+					}
+
+				}
+
+				else {
+					alert("select orders of same symbol");
+					return false;
+				}
+
+			}
+		}
+
+		Array.prototype.allValuesSame = function() {
+			//<![CDATA[  
+			for (var i = 1; i < this.length; i++) {
+				if (this[i] !== this[0])
+					return false;
+			}
+			//]]>
+			return true;
+		}
+	</script>
+
+</body>
+</html>
